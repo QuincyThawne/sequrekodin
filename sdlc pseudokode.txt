@@ -1,0 +1,25 @@
+// Account Creation
+function createAccount(username, password):
+ if not isValidInput(username, password):
+ return "Invalid input"
+ hashedPassword = hashPassword(password) // Hash password with SHA-256
+ storeInDatabase(username, hashedPassword)
+// Login
+function login(username, password):
+ if not isValidInput(username, password):
+ return "Invalid input"
+ storedHash = getPasswordFromDatabase(username)
+ if verifyPassword(password, storedHash):
+ sessionToken = createSessionToken(username)
+ storeSessionToken(sessionToken)
+ setSecureCookie("session_token", sessionToken)
+ return "Login successful"
+ else:
+ return "Invalid username or password"
+// Input Validation
+function isValidInput(input):
+ return regexCheck(input, "[safe_characters_only]") // Prevents SQL Injection, XSS
+// Password Hashing
+function hashPassword(password):
+ salt = generateRandomSalt()
+ return SHA256(password + salt) // Simple example of hashing with salt
